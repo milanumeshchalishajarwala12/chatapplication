@@ -3,6 +3,9 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const formatMessage = require("./utils/messages");
+const { initConnection, insertDataIntoMessagesTable } = require("./config/db");
+
+initConnection();
 const {
   userJoin,
   getCurrentUser,
@@ -50,8 +53,10 @@ io.on("connection", socket => {
   // Listen for chatMessage
   socket.on("chatMessage", msg => {
     const user = getCurrentUser(socket.id);
+    var dbuser = user.username;
 
-    io.to(user.room).emit("message", formatMessage(user.username, msg));
+    io.to(user.room).emit("message", formatMessage(dbuser, msg));
+    insertDataIntoMessagesTable(msg, dbuser);
   });
 
   // Runs when client disconnects
