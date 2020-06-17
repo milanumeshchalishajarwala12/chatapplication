@@ -37,7 +37,7 @@ function displayTable(table) {
 
 function insertDataIntoMessagesTable(msg, dbuser) {
   var date = new Date().toString();
-  var sql = `INSERT INTO messages (text, user, date_time) VALUES ('${msg}', '${dbuser}', '${date}')`;
+  var sql = `INSERT INTO messages (text, username, date_time) VALUES ('${msg}', '${dbuser}', '${date}')`;
   connection.query(sql, function(err, result) {
     if (err) throw err;
     console.log(result);
